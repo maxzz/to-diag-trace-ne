@@ -31,7 +31,8 @@
       "enableInspector": true,
       "openInspectorOnStartup": false,
       "resizable": true,
-      "hidden": false
+      "hidden": false,
+      "exitProcessOnClose": false
     }
   },
   "cli": {
