@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# NeutralinoJS build output
+/dist/
+
+# Frontend build output
+/frontend/dist/
+
+# Log files
+*.log
+neutralinojs.log
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Temporary/Local files
+/frontend/public/neutralino.js
+/frontend/public/neutralino.d.ts

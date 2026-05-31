@@ -1,0 +1,51 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
+  "applicationId": "js.neutralino.todiagtrace",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/frontend/dist/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "tokenSecurity": "one-time",
+  "logging": {
+    "enabled": true,
+    "writeToLogFile": true
+  },
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "window.*",
+    "filesystem.*"
+  ],
+  "modes": {
+    "window": {
+      "title": "to-diag-trace-ne",
+      "width": 1200,
+      "height": 800,
+      "minWidth": 400,
+      "minHeight": 200,
+      "center": true,
+      "icon": "/frontend/dist/appicon.png",
+      "enableInspector": true,
+      "openInspectorOnStartup": false,
+      "resizable": true,
+      "hidden": true
+    }
+  },
+  "cli": {
+    "binaryName": "to-diag-trace-ne",
+    "resourcesPath": "/frontend/dist/",
+    "clientLibrary": "/frontend/public/neutralino.js",
+    "binaryVersion": "5.2.0",
+    "clientVersion": "5.2.0",
+    "frontendLibrary": {
+      "patchFile": "/index.html",
+      "devUrl": "http://localhost:5173",
+      "projectPath": "/frontend/",
+      "devCommand": "pnpm run dev",
+      "buildCommand": "pnpm run build"
+    }
+  }
+}

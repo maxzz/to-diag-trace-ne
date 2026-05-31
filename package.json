@@ -1,0 +1,21 @@
+{
+  "name": "to-diag-trace-ne",
+  "version": "1.0.0",
+  "description": "NeutralinoJS tool to collect diagnostic traces",
+  "private": true,
+  "author": {
+    "name": "Max Zakharzhevskiy",
+    "email": "maxzz@msn.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "neu run",
+    "build": "neu build",
+    "frontend:install": "pnpm --prefix frontend install",
+    "frontend:build": "pnpm --prefix frontend run build",
+    "frontend:dev": "pnpm --prefix frontend run dev"
+  },
+  "devDependencies": {
+    "@neutralinojs/neu": "^11.7.1"
+  }
+}
