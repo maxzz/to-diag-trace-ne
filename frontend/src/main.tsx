@@ -8,37 +8,38 @@ import './index.css';
 // Initialize Neutralino client
 Neutralino.init();
 
-// Helper to debounce callbacks
-function debounce<F extends (...args: any[]) => any>(fn: F, delay: number) {
-    let timer: any;
-    return function (...args: Parameters<F>) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => fn(...args), delay);
-    };
-}
+// Track last saved geometry to avoid redundant disk writes
+let lastX = 0;
+let lastY = 0;
+let lastWidth = 0;
+let lastHeight = 0;
 
-// Dynamically save window options when resized in the background
-window.addEventListener('resize', debounce(() => {
-    saveWindowOptions().catch(console.error);
-}, 500));
-
-// Handle windowClose event
-Neutralino.events.on('windowClose', async () => {
+// Periodically check and save window geometry in the background
+setInterval(async () => {
     try {
-        // Race saveWindowOptions against a 150ms timeout to prevent native-side deadlocks during exit
-        await Promise.race([
-            saveWindowOptions(),
-            new Promise<void>((resolve) => setTimeout(resolve, 150))
-        ]);
-    } catch (e) {
-        console.error('Error saving window bounds on close:', e);
-    } finally {
-        if (window.NL_OS === 'Darwin') {
-            Neutralino.app.killProcess();
-        } else {
-            Neutralino.app.exit(0);
+        const size = await Neutralino.window.getSize();
+        const pos = await Neutralino.window.getPosition();
+        
+        // If geometry has changed, persist it to init.json
+        if (pos.x !== lastX || pos.y !== lastY || size.width !== lastWidth || size.height !== lastHeight) {
+            lastX = pos.x ?? 0;
+            lastY = pos.y ?? 0;
+            lastWidth = size.width ?? 0;
+            lastHeight = size.height ?? 0;
+            await saveWindowOptions();
         }
+    } catch (e) {
+        // Ignored during shutdown or startup
     }
+}, 1000);
+
+// Handle windowClose event - must be synchronous and fast to avoid deadlocks
+Neutralino.events.on('windowClose', () => {
+    // Forcibly and cleanly terminate the Neutralino process instantly
+    Neutralino.app.killProcess().catch(() => {
+        // Fallback exit if killProcess somehow fails
+        Neutralino.app.exit(0);
+    });
 });
 
 // Restore window options (size, pos) and then show the window
