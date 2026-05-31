@@ -43,11 +43,10 @@ to-diag-trace-ne/
     ├── vite.config.ts        # Vite configuration incorporating React and Tailwind CSS
     ├── index.html            # Entry-point HTML file for the WebView
     ├── src/
-    │   ├── main.tsx          # Client startup, SDK initialization, and close handlers
+    │   ├── main.tsx          # Client startup and SDK initialization
     │   ├── App.tsx           # Primary React component and Tailwind UI layouts
     │   ├── index.css         # Tailwind directives and layer extensions
-    │   ├── vite-env.d.ts     # Ambient TypeScript types for Vite
-    │   └── neutralino.ts     # Custom logic for saving/restoring window position and size
+    │   └── vite-env.d.ts     # Ambient TypeScript types for Vite
     └── public/
         ├── appicon.png       # Branded native application icon file
         ├── neutralino.js     # NeutralinoJS SDK client library (auto-downloaded)
@@ -120,15 +119,10 @@ Output binaries generated:
 
 ## Window State Persistency Architecture
 
-Unlike Wails, which handles bounds persistency in native Go code, this app utilizes Neutralino's filesystem and OS APIs inside JavaScript/TypeScript:
+The application implements native cross-platform bounds and position persistency using the native NeutralinoJS config engine:
 
-1. **Startup (`frontend/src/main.tsx`)**:
-   - `Neutralino.init()` initializes the native pipeline.
-   - `restoreWindowOptions()` queries `%APPDATA%/to-diag-trace-ne/init.json`, checks coordinate sanity, moves/resizes the viewport, and finally calls `Neutralino.window.show()`.
-2. **Shutdown (`frontend/src/main.tsx`)**:
-   - Intercepts the native close action (`windowClose` event).
-   - Queries `Neutralino.window.getSize()` and `Neutralino.window.getPosition()`.
-   - Serializes boundaries to the local JSON configuration file and gracefully calls `Neutralino.app.exit()`.
+1. **`useSavedState: true`**: Handled natively in C++ inside the Neutralino core. The window coordinates, size (width/height), and maximized status are automatically saved on exit and restored on launch without any custom JavaScript scripts.
+2. **`exitProcessOnClose: true`**: Standard immediate process exit, completely eliminating native thread freezes or lockups on Windows.
 
 ---
 

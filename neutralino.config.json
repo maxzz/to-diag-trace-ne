@@ -32,7 +32,8 @@
       "openInspectorOnStartup": false,
       "resizable": true,
       "hidden": false,
-      "exitProcessOnClose": false
+      "exitProcessOnClose": true,
+      "useSavedState": true
     }
   },
   "cli": {
