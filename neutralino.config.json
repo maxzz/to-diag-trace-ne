@@ -31,7 +31,7 @@
       "enableInspector": true,
       "openInspectorOnStartup": false,
       "resizable": true,
-      "hidden": true
+      "hidden": false
     }
   },
   "cli": {
@@ -41,7 +41,7 @@
     "binaryVersion": "5.2.0",
     "clientVersion": "5.2.0",
     "frontendLibrary": {
-      "patchFile": "/index.html",
+      "patchFile": "/frontend/index.html",
       "devUrl": "http://localhost:5173",
       "projectPath": "/frontend/",
       "devCommand": "pnpm run dev",

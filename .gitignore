@@ -4,6 +4,8 @@ frontend/node_modules/
 
 # NeutralinoJS build output
 /dist/
+/bin/
+/.tmp/
 
 # Frontend build output
 /frontend/dist/
